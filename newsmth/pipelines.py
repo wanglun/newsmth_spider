@@ -37,12 +37,12 @@ class ElasticsearchPipeline(object):
                     spider.settings.get('NEWSMTH_ES_INDEX'),
                     spider.settings.get('NEWSMTH_ES_TYPE_BOARD'),
                     item['name'],
-                    {'doc': dict(item)})
+                    {'doc': dict(item), "doc_as_upsert": True})
             return item
         elif spider.name == 'board':
             self.es.update(
                     spider.settings.get('NEWSMTH_ES_INDEX'),
                     spider.settings.get('NEWSMTH_ES_TYPE_ARTICLE'),
                     '{}_{}'.format(item['board_name'], item['id']),
-                    {'doc': dict(item)})
+                    {'doc': dict(item), "doc_as_upsert": True})
             return item
