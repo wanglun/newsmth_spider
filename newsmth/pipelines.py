@@ -33,16 +33,16 @@ class ElasticsearchPipeline(object):
 
     def process_item(self, item, spider):
         if spider.name == 'boards':
-            self.es.index(
+            self.es.update(
                     spider.settings.get('NEWSMTH_ES_INDEX'),
                     spider.settings.get('NEWSMTH_ES_TYPE_BOARD'),
-                    dict(item),
-                    id=item['name'])
+                    item['name'],
+                    {'doc': dict(item)})
             return item
         elif spider.name == 'board':
-            self.es.index(
+            self.es.update(
                     spider.settings.get('NEWSMTH_ES_INDEX'),
                     spider.settings.get('NEWSMTH_ES_TYPE_ARTICLE'),
-                    dict(item),
-                    id='{}_{}'.format(item['board_name'], item['id']))
+                    '{}_{}'.format(item['board_name'], item['id']),
+                    {'doc': dict(item)})
             return item
